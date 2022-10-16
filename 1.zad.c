@@ -43,6 +43,7 @@ void UpisiStrukturu(_studenti s[],char *c, int n){
    for(int i=0; i<n;i++){
       fscanf(f,"%s %s %d",s[i].ime,s[i].prezime,s[i].bodovi);
    }
+   fclose(f);
 }
 
 void RndBodovi(_studenti s[],int n){
