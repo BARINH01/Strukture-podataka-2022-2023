@@ -33,6 +33,7 @@ int PrebrojiFile(char *c){
 }
 
 void UpisiStrukturu(_studenti s[],char *c, int n){
+
    FILE *f;
    f=fopen(c,"r");
    if(f==NULL){
@@ -63,7 +64,6 @@ void IspisPodataka(_studenti *s,int n){
 
 int main(){
 
-
    _studenti *s;
    char unos[100];
    int i,n=1;
@@ -75,6 +75,7 @@ int main(){
    printf("%d",n);
 
    s=malloc(n*sizeof(_studenti));
+   
    RndBodovi(s,n);
    UpisiStrukturu(s,unos,n);
    IspisPodataka(s,n);
