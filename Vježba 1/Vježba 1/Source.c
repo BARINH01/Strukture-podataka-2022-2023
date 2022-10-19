@@ -23,10 +23,13 @@ int main() {
 	char nazivdatoteke[MAX_LINE] = { 0 };
 	student* studenti = NULL;
 
-	printf("Unesi ime datoteke: \n");
+	printf("Unesi ime datoteke (s datotecnim nastavkom): \n");
 	scanf(" %s", nazivdatoteke);
 	int brojstudenata = 0;
 	brojstudenata = IzbrojiStudente(nazivdatoteke);
+
+	if (brojstudenata <= 0) 
+		printf("U datotetci nema upisanih studenata!\n");
 
 	studenti = Alocirajmemorijuucitajpodatke(nazivdatoteke, brojstudenata);
 
