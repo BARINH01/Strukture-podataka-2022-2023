@@ -79,6 +79,7 @@ student* Alocirajmemorijuucitajpodatke(char* nazivdatoteke, int brojstudenata) {
 	}
 
 	p = fopen(nazivdatoteke, "r");
+
 	if (!p) {
 		printf("Greska pri otvaranju datoteke!\n");
 		free(studenti);
