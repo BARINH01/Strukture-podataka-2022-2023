@@ -61,6 +61,7 @@ int IzbrojiStudente(char* nazivdatoteke) {
 		}
 	}
 	fclose(p);
+
 	return brojac;
 }
 
