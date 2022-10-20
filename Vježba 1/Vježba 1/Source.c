@@ -61,6 +61,7 @@ int IzbrojiStudente(char* nazivdatoteke) {
 		}
 	}
 	fclose(p);
+
 	return brojac;
 }
 
@@ -79,6 +80,7 @@ student* Alocirajmemorijuucitajpodatke(char* nazivdatoteke, int brojstudenata) {
 	}
 
 	p = fopen(nazivdatoteke, "r");
+
 	if (!p) {
 		printf("Greska pri otvaranju datoteke!\n");
 		free(studenti);
@@ -102,7 +104,7 @@ double izracunajmaksimalanbrojbodova(int brojac, student* studenti) {
 
 	for (i = 1; i < brojac; i++) {
 		if (studenti[i].bodovi > studenti[max_br].bodovi)
-			i = max_br;
+			max_br = i;
 	}
 
 	return studenti[max_br].bodovi;
