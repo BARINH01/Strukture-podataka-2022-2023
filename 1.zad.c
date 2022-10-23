@@ -72,7 +72,7 @@ int main(){
    scanf("%s",unos);
 
    n=PrebrojiFile(unos);
-   printf("%d",n);
+   printf("\n%d\n",n);
 
    s=malloc(n*sizeof(_studenti));
    
