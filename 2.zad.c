@@ -4,8 +4,6 @@
 #include <string.h>
 
 
-
-
 typedef struct {
     char ime[100], prezime[100];
     int godiste;
@@ -21,13 +19,15 @@ _osoba *alociraj_ucitaj_izbroji(char *unos){
     printf("usao sam u funkciju\n");
     f=fopen(unos,"r");
     
-    /*if(!f){
+    if(!f){
         printf("neuspješno otvorena datoteka");
-    }*/
+        return NULL;
+    }
     
     o=malloc(sizeof(_osoba));
     if(!o){
         printf("neuspješno zauzimanje memorije");
+        free(o);
         return NULL;
     }
     
@@ -39,18 +39,26 @@ _osoba *alociraj_ucitaj_izbroji(char *unos){
             printf("%d\n",n);
             n++;
             o=realloc(o,(n+1)*sizeof(_osoba));
+            if(!o){
+                printf("neuspjesno alociranje");
+                free(o);
+                return NULL;
+            }
             o[n-1].next=&o[n];
         }
         
     }
+
+    o=realloc(o,n*sizeof(_osoba));
     o[n].next=NULL;
+    
     fclose(f);
     return o;
    
 }
 
 
-void printlist(_osoba *pocetak){
+void printList(_osoba *pocetak){
     _osoba *temp=pocetak;
 
     while(temp!=NULL){
@@ -78,6 +86,7 @@ void umetni_poslje(_osoba *prosla_osoba){
 
     if(!nova_osoba){
         printf("memorija neuspješno alocirana");
+        return;
     }
 
     unos_u_struct(nova_osoba);
@@ -111,6 +120,7 @@ _osoba *trazi_ime(char *unos,_osoba *o){
     }
     if(temp->next==NULL){
         printf("nisam nasa tu osobu");
+        return NULL;
     }
 }
 
@@ -153,7 +163,7 @@ int main(){
         switch (unos)
         {
         case '1':
-            printlist(head);
+            printList(head);
             break;
     
         case '2':
@@ -167,5 +177,6 @@ int main(){
             printf("\n");
         }   
     }
+    return 0;
 
 }
