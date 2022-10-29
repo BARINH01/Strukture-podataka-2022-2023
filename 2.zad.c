@@ -10,7 +10,7 @@ typedef struct {
     struct _osoba* next;
 }_osoba;
 
-_osoba *alociraj_ucitaj_izbroji(char *unos){
+/*_osoba *alociraj_ucitaj_izbroji(char *unos){
     FILE *f;
     _osoba *o;
     int n=0;
@@ -56,7 +56,7 @@ _osoba *alociraj_ucitaj_izbroji(char *unos){
     return o;
    
 }
-
+*/
 
 void printList(_osoba *pocetak){
     _osoba *temp=pocetak;
@@ -126,13 +126,12 @@ _osoba *trazi_ime(char *unos,_osoba *o){
 
 int main(){
     _osoba *o, *head;
-    /*FILE *f;
-    
-    f=fopen("osobe.txt","r");*/
+    FILE *f;
+    f=fopen("osobe.txt","r");
     int n=1;
-    char c[100];
+    char c;
 
-   /* while((c=getc(f))!=EOF){
+    while((c=getc(f))!=EOF){
         if(c=='\n'){
             n++;
         }
@@ -148,13 +147,13 @@ int main(){
 
     for(int i=0;i<n;i++){
         fscanf(f,"%s %s %d", o[i].ime, o[i].prezime, &o[i].godiste);  
-    }*/
+    }
 
-    printf("koju datoteku zelite otvoriti\n");
+    /*printf("koju datoteku zelite otvoriti\n");
 
     scanf("%s",&c);
     o=alociraj_ucitaj_izbroji(c);
-    head=&o[0];
+    head=&o[0];*/
     
     char unos;
     while(unos!='k'){

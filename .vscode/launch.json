@@ -9,7 +9,7 @@
       "stopAtEntry": false,
       "externalConsole": true,
       "cwd": "c:/Users/Korisnik/Documents/GitHub/Strukture-podataka-2022-2023",
-      "program": "c:/Users/Korisnik/Documents/GitHub/Strukture-podataka-2022-2023/build/Debug/outDebug",
+      "program": "C:/Users/Korisnik/Documents/GitHub/Strukture-podataka-2022-2023/zad2_pravi.exe" ,
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
