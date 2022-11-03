@@ -32,7 +32,8 @@ void sort(person** head, person *currentPerson);
 person* tortoise_and_hare(person* head);
 person* merge(person* left, person* right);
 person* merge_sort(person* head);
-void* import_list_and_sort(person* forImport, char* fileName);
+void import_list_and_sort(person** head, char* fileName);
+int export_list(person* forExport, char* fileName);
 
 
 
@@ -81,13 +82,23 @@ int main() {
         case 7:
             printf("Unesite prezime osobe prije koje zelite unjeti novu osobu\n");
             scanf(" %s", surname);
-            insert_in_list(find_before(&head, surname));
+            insert_in_list(find_before(&head,surname));
             break;
 
         case 8:
             head = merge_sort(head);
             break;
-
+            
+        case 9:
+            printf("Unesite prezime osobe iza koje zelite unjeti novu osobu\n");
+            scanf(" %s", surname);
+            import_list_and_sort(&head, surname);
+            break;
+        case 10:
+            printf("Unesite ime datoteke (s datotecnim nastavkom) u koju zelite ispisati listu:\n");
+            scanf(" %s", fileName);
+            export_list(head, fileName);
+            break;
         default:
             printf("Pogreska!\n");
         }
@@ -338,47 +349,71 @@ person* merge_sort(person* head) {
 }
     
     
-void read_file (person **head, char* fileName) {
+void import_list_and_sort (person **head, char* fileName) {
 
     FILE* fp = NULL;
 
     char buffer[MAX_LINE] = { 0 };
     person* currentPerson = NULL;
     
-    currentPerson=*head;
+    printf("tu sam 1");
+    currentPerson= *head;
     
-    currentPerson=malloc(sizeof(person));
+    //currentPerson=malloc(sizeof(person));
 
     if (!currentPerson) {
         printf("malloc ne.\n");
-        return NULL;
+        return;
     }
 
     fp = fopen(fileName, "r");
 
     if (!fp) {
         printf("Datoteka se ne moze otvoriti.\n");
-        return NULL;
+        return;
     }
-    
-    head=merge_sort(&head);
+    printf("tu sam");
+    //head=merge_sort(head);
     
     while (!feof(fp)) {
-        fgets(buffer, MAX_LINE, fp);
-        if(sscanf(buffer, " %s %s %d", currentPerson->name, currentPerson->surname, currentPerson->byear) == 3){
-            sort(&head,currentPerson);
-        }
+
+        fscanf(fp, " %s %s %d", currentPerson->name, currentPerson->surname, &currentPerson->byear);
+        sort(&head,currentPerson);
+        printf(" %s %s %d", currentPerson->name, currentPerson->surname, currentPerson->byear);
     }
+    currentPerson->next = NULL;
+
 }
 
 void sort (person **head, person *currentPerson){
+    person* temp = *head;
     
-    while((*head)!=NULL && strcmp((*head)->surname,currentPerson->surname)<=0){  
-        *head=(*head)->next;
+    while(temp->next!=NULL && strcmp(temp->surname, currentPerson->surname)>0){  
+        temp=temp->next;
         
     }
     
-    currentPerson->next=(*head)->next;
-    (*head)->next=currentPerson;
+    currentPerson->next=temp->next;
+    temp->next = currentPerson;
     
+}
+int export_list(person* forExport, char* fileName) {
+
+    FILE* fp = NULL;
+
+    fp = fopen(fileName, "w");
+
+    if (!fp) {
+        printf("Datoteka se ne moze otvoriti.\n");
+        return ERROR_MESSAGE;
+    }
+
+    while (forExport != NULL) {
+        fprintf(fp, "%s %s %d\n", forExport->name, forExport->surname, forExport->byear);
+        forExport = forExport->next;
+    }
+
+    fclose(fp);
+
+    return 0;
 }
