@@ -32,7 +32,7 @@ void sort(person** head);
 person* tortoise_and_hare(person* head);
 person* merge(person* left, person* right);
 person* merge_sort(person* head);
-person* import_list_and_sort(person* forImport, char* fileName);
+int export_list(person* forExport, char *fileName);
 
 
 
@@ -87,7 +87,17 @@ int main() {
         case 8:
             head = merge_sort(head);
             break;
-
+       /* case 9:
+            printf("Unesite ime datoteke (s datotecnim nastavkom) iz koje zelite iscitati listu:\n");
+            scanf(" %s", fileName);
+            import_list_and_sort(&head, fileName);
+            break;
+            */
+        case 10:
+            printf("Unesite ime datoteke (s datotecnim nastavkom) u koju zelite ispisati listu:\n");
+            scanf(" %s", fileName);
+            export_list(head, fileName);
+            break;
         default:
             printf("Pogreska!\n");
         }
@@ -232,19 +242,21 @@ void delete_person(person** head) {
 int menu() {
     int choice = 0;
 
-    printf("Izbornik:\n"
-        "0 - izlaz\n"
-        "1 - Unos novog elementa na pocetak liste\n"
-        "2 - Ispis liste\n"
-        "3 - Unos novog elementa na kraj liste\n"
-        "4 - Pronalazak elemnta u listi (po prezimenu)\n"
-        "5 - Brisanje elementa iz liste\n"
-        "6 - Unošenje elementa poslje\n"
-        "7 - Unošenje elementa prije\n"
-        "8 - Sortiraj listu po prezimenu\n");
+    printf("\t****Izbornik****\n"
+        "\t0 - izlaz\n"
+        "\t1 - Unos novog elementa na pocetak liste\n"
+        "\t2 - Ispis liste\n"
+        "\t3 - Unos novog elementa na kraj liste\n"
+        "\t4 - Pronalazak elemnta u listi (po prezimenu)\n"
+        "\t5 - Brisanje elementa iz liste\n"
+        "\t6 - Unošenje elementa poslje\n"
+        "\t7 - Unošenje elementa prije\n"
+        "\t8 - Sortiraj listu po prezimenu\n"
+        "\t9 - Unos liste iz datoteke\n"
+        "\t10 - Ispis liste u datoteku\n");
 
     scanf("%d", &choice);
-    if (choice >= 0 && choice <= 9)
+    if (choice >= 0 && choice <= 11)
         return choice;
     else
         printf("Pogresan unos ponudene opcije, pokusajte ponovno.\n");
@@ -256,14 +268,14 @@ void insert_in_list(person* currentPerson) {
     person* newPerson = NULL;
 
     if (currentPerson == NULL) {
-        printf("osoba ne postoji u listi! unlucky\n");
+        printf("Osoba ne postoji u listi! Unlucky\n");
         return;
     }
     printf("Osoba pronadena\n");
     newPerson = malloc(sizeof(person));
 
     if (!newPerson) {
-        printf("memorija neuspješno alocirana\n");
+        printf("Memorija neuspjesno alocirana\n");
         return;
     }
 
@@ -271,7 +283,7 @@ void insert_in_list(person* currentPerson) {
     newPerson->next = currentPerson->next;
     currentPerson->next = newPerson;
 
-    printf("uspio sam unjet\n");
+    printf("Ineseno\n");
     return;
 }
 
@@ -336,27 +348,25 @@ person* merge_sort(person* head) {
 
 
 }
-person* import_list_and_sort(person* forImport, char* fileName) {
+
+
+int export_list(person* forExport, char *fileName) {
 
     FILE* fp = NULL;
-    char buffer[MAX_LINE] = { 0 };
-    char name[MAX_STRING] = { 0 };
-    char surname[MAX_STRING] = { 0 };
-    int byear = 0;
-    person* newPerson = NULL;
-
-    fp = fopen(fileName, "r");
+    
+    fp = fopen(fileName, "w");
 
     if (!fp) {
         printf("Datoteka se ne moze otvoriti.\n");
-        return NULL;
+        return ERROR_MESSAGE;
     }
-    
-    while (!feof(fp)) {
-        fgets(buffer, MAX_LINE, fp);
-        if(sscanf(buffer, " %s %s %d", name, surname, &byear) == 3)
 
+    while (forExport != NULL) {
+        fprintf(fp, "%s %s %d\n", forExport->name, forExport->surname, forExport->byear);
+        forExport = forExport->next;
     }
-   
 
+    fclose(fp);
+
+    return 0;
 }
