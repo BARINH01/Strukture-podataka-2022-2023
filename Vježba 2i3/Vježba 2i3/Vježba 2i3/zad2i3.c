@@ -28,11 +28,11 @@ void delete_person(person** head);
 int menu();
 //3.zad
 void insert_in_list(person* currentPerson);
-void sort(person** head);
+void sort(person** head, person *currentPerson);
 person* tortoise_and_hare(person* head);
 person* merge(person* left, person* right);
 person* merge_sort(person* head);
-int export_list(person* forExport, char *fileName);
+void* import_list_and_sort(person* forImport, char* fileName);
 
 
 
@@ -87,17 +87,7 @@ int main() {
         case 8:
             head = merge_sort(head);
             break;
-       /* case 9:
-            printf("Unesite ime datoteke (s datotecnim nastavkom) iz koje zelite iscitati listu:\n");
-            scanf(" %s", fileName);
-            import_list_and_sort(&head, fileName);
-            break;
-            */
-        case 10:
-            printf("Unesite ime datoteke (s datotecnim nastavkom) u koju zelite ispisati listu:\n");
-            scanf(" %s", fileName);
-            export_list(head, fileName);
-            break;
+
         default:
             printf("Pogreska!\n");
         }
@@ -115,7 +105,7 @@ void insert_beggining(person** head) {
     newPerson = malloc(sizeof(person));
 
     if (!newPerson) {
-        printf("Memorija neuspje�no alocirana!\n");
+        printf("Memorija neuspješno alocirana!\n");
         free(newPerson);
         return;
     }
@@ -242,21 +232,19 @@ void delete_person(person** head) {
 int menu() {
     int choice = 0;
 
-    printf("\t****Izbornik****\n"
-        "\t0 - izlaz\n"
-        "\t1 - Unos novog elementa na pocetak liste\n"
-        "\t2 - Ispis liste\n"
-        "\t3 - Unos novog elementa na kraj liste\n"
-        "\t4 - Pronalazak elemnta u listi (po prezimenu)\n"
-        "\t5 - Brisanje elementa iz liste\n"
-        "\t6 - Uno�enje elementa poslje\n"
-        "\t7 - Uno�enje elementa prije\n"
-        "\t8 - Sortiraj listu po prezimenu\n"
-        "\t9 - Unos liste iz datoteke\n"
-        "\t10 - Ispis liste u datoteku\n");
+    printf("Izbornik:\n"
+        "0 - izlaz\n"
+        "1 - Unos novog elementa na pocetak liste\n"
+        "2 - Ispis liste\n"
+        "3 - Unos novog elementa na kraj liste\n"
+        "4 - Pronalazak elemnta u listi (po prezimenu)\n"
+        "5 - Brisanje elementa iz liste\n"
+        "6 - Unošenje elementa poslje\n"
+        "7 - Unošenje elementa prije\n"
+        "8 - Sortiraj listu po prezimenu\n");
 
     scanf("%d", &choice);
-    if (choice >= 0 && choice <= 11)
+    if (choice >= 0 && choice <= 9)
         return choice;
     else
         printf("Pogresan unos ponudene opcije, pokusajte ponovno.\n");
@@ -268,14 +256,14 @@ void insert_in_list(person* currentPerson) {
     person* newPerson = NULL;
 
     if (currentPerson == NULL) {
-        printf("Osoba ne postoji u listi! Unlucky\n");
+        printf("osoba ne postoji u listi! unlucky\n");
         return;
     }
     printf("Osoba pronadena\n");
     newPerson = malloc(sizeof(person));
 
     if (!newPerson) {
-        printf("Memorija neuspjesno alocirana\n");
+        printf("memorija neuspješno alocirana\n");
         return;
     }
 
@@ -283,7 +271,7 @@ void insert_in_list(person* currentPerson) {
     newPerson->next = currentPerson->next;
     currentPerson->next = newPerson;
 
-    printf("Ineseno\n");
+    printf("uspio sam unjet\n");
     return;
 }
 
@@ -345,28 +333,52 @@ person* merge_sort(person* head) {
     person* newHead = merge(left, right);
 
     return newHead;
-
-
+    
+    
 }
-
-
-int export_list(person* forExport, char *fileName) {
+    
+    
+void read_file (person **head, char* fileName) {
 
     FILE* fp = NULL;
+
+    char buffer[MAX_LINE] = { 0 };
+    person* currentPerson = NULL;
     
-    fp = fopen(fileName, "w");
+    currentPerson=*head;
+    
+    currentPerson=malloc(sizeof(person));
+
+    if (!currentPerson) {
+        printf("malloc ne.\n");
+        return NULL;
+    }
+
+    fp = fopen(fileName, "r");
 
     if (!fp) {
         printf("Datoteka se ne moze otvoriti.\n");
-        return ERROR_MESSAGE;
+        return NULL;
     }
-
-    while (forExport != NULL) {
-        fprintf(fp, "%s %s %d\n", forExport->name, forExport->surname, forExport->byear);
-        forExport = forExport->next;
+    
+    head=merge_sort(&head);
+    
+    while (!feof(fp)) {
+        fgets(buffer, MAX_LINE, fp);
+        if(sscanf(buffer, " %s %s %d", currentPerson->name, currentPerson->surname, currentPerson->byear) == 3){
+            sort(&head,currentPerson);
+        }
     }
+}
 
-    fclose(fp);
-
-    return 0;
+void sort (person **head, person *currentPerson){
+    
+    while((*head)!=NULL && strcmp((*head)->surname,currentPerson->surname)<=0){  
+        *head=(*head)->next;
+        
+    }
+    
+    currentPerson->next=(*head)->next;
+    (*head)->next=currentPerson;
+    
 }
