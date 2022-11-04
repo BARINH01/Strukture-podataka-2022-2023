@@ -33,6 +33,12 @@ person* tortoise_and_hare(person* head);
 person* merge(person* left, person* right);
 person* merge_sort(person* head);
 int export_list(person* forExport, char *fileName);
+void sort(person** head, person *currentPerson);
+person* tortoise_and_hare(person* head);
+person* merge(person* left, person* right);
+person* merge_sort(person* head);
+void import_list_and_sort(person** head, char* fileName);
+int export_list(person* forExport, char* fileName);
 
 
 
@@ -81,18 +87,27 @@ int main() {
         case 7:
             printf("Unesite prezime osobe prije koje zelite unjeti novu osobu\n");
             scanf(" %s", surname);
+
             insert_in_list(find_before(&head, surname));
             break;
 
         case 8:
             head = merge_sort(head);
             break;
+
        /* case 9:
             printf("Unesite ime datoteke (s datotecnim nastavkom) iz koje zelite iscitati listu:\n");
             scanf(" %s", fileName);
             import_list_and_sort(&head, fileName);
             break;
             */
+            
+        case 9:
+            printf("Unesite prezime osobe iza koje zelite unjeti novu osobu\n");
+            scanf(" %s", surname);
+            import_list_and_sort(&head, surname);
+            break;
+
         case 10:
             printf("Unesite ime datoteke (s datotecnim nastavkom) u koju zelite ispisati listu:\n");
             scanf(" %s", fileName);
@@ -115,7 +130,10 @@ void insert_beggining(person** head) {
     newPerson = malloc(sizeof(person));
 
     if (!newPerson) {
+
         printf("Memorija neuspješno alocirana!\n");
+
+        printf("Memorija neuspjeÅ¡no alocirana!\n");
         free(newPerson);
         return;
     }
@@ -268,6 +286,7 @@ void insert_in_list(person* currentPerson) {
     person* newPerson = NULL;
 
     if (currentPerson == NULL) {
+
         printf("Osoba ne postoji u listi! Unlucky\n");
         return;
     }
@@ -275,6 +294,7 @@ void insert_in_list(person* currentPerson) {
     newPerson = malloc(sizeof(person));
 
     if (!newPerson) {
+
         printf("Memorija neuspjesno alocirana\n");
         return;
     }
@@ -283,7 +303,11 @@ void insert_in_list(person* currentPerson) {
     newPerson->next = currentPerson->next;
     currentPerson->next = newPerson;
 
+
     printf("Ineseno\n");
+
+    printf("uspio sam unjet\n");
+
     return;
 }
 
@@ -347,13 +371,60 @@ person* merge_sort(person* head) {
     return newHead;
 
 
-}
 
-
-int export_list(person* forExport, char *fileName) {
+}    
+void import_list_and_sort (person **head, char* fileName) {
 
     FILE* fp = NULL;
+
+    char buffer[MAX_LINE] = { 0 };
+    person* currentPerson = NULL;
     
+    printf("tu sam 1");
+    currentPerson= *head;
+    
+    //currentPerson=malloc(sizeof(person));
+
+    if (!currentPerson) {
+        printf("malloc ne.\n");
+        return;
+    }
+
+    fp = fopen(fileName, "r");
+
+    if (!fp) {
+        printf("Datoteka se ne moze otvoriti.\n");
+        return;
+    }
+    printf("tu sam");
+    //head=merge_sort(head);
+    
+    while (!feof(fp)) {
+
+        fscanf(fp, " %s %s %d", currentPerson->name, currentPerson->surname, &currentPerson->byear);
+        sort(&head,currentPerson);
+        printf(" %s %s %d", currentPerson->name, currentPerson->surname, currentPerson->byear);
+    }
+    currentPerson->next = NULL;
+
+}
+
+void sort (person **head, person *currentPerson){
+    person* temp = *head;
+    
+    while(temp->next!=NULL && strcmp(temp->surname, currentPerson->surname)>0){  
+        temp=temp->next;
+        
+    }
+    
+    currentPerson->next=temp->next;
+    temp->next = currentPerson;
+    
+}
+int export_list(person* forExport, char* fileName) {
+
+    FILE* fp = NULL;
+
     fp = fopen(fileName, "w");
 
     if (!fp) {

@@ -14,9 +14,9 @@ typedef struct _student {
 	char prezime[MAX_SIZE];
 	double bodovi;
 } student;
-student* Alocirajmemorijuucitajpodatke(char* nazivdatoteke, int brojstudenata);
-double izracunajmaksimalanbrojbodova(int brojac, student* studenti);
-void ispispodataka(student* studenti, int brojac);
+student* AlocirajUcitaj(char* nazivdatoteke, int brojstudenata);
+double IzracunMaxBrBodova(int brojac, student* studenti);
+void IspisPodataka(student* studenti, int brojac);
 int IzbrojiStudente(char* filename);
 int main() {
 
@@ -31,13 +31,16 @@ int main() {
 	if (brojstudenata <= 0) 
 		printf("U datotetci nema upisanih studenata!\n");
 
-	studenti = Alocirajmemorijuucitajpodatke(nazivdatoteke, brojstudenata);
+	studenti = AlocirajUcitaj(nazivdatoteke, brojstudenata);
 
 	if (!studenti) {
-		return ("Greska pri alociranju memorije!\n");
+
+		printf("Neuspjesna alokacija memorije!\n");
+
+		return ERROR_MESSAGE;
 	}
 
-	ispispodataka(studenti, brojstudenata);
+	IspisPodataka(studenti, brojstudenata);
 
 	return NULL;
 }
@@ -65,12 +68,14 @@ int IzbrojiStudente(char* nazivdatoteke) {
 	return brojac;
 }
 
-student* Alocirajmemorijuucitajpodatke(char* nazivdatoteke, int brojstudenata) {
+student* AlocirajUcitaj(char* nazivdatoteke, int brojstudenata) {
 
 	FILE* p = NULL;
 	student* studenti = NULL;
 	int brojac = 0;
-	char ime[MAX_SIZE], prezime[MAX_SIZE], buffer[MAX_LINE] = { 0 };
+	char ime[MAX_SIZE] = { 0 };
+	char prezime[MAX_SIZE] = { 0 };
+	char buffer[MAX_LINE] = { 0 };
 	double bodovi = 0.0;
 
 	studenti = (student*)malloc(brojstudenata * sizeof(student));
@@ -98,7 +103,7 @@ student* Alocirajmemorijuucitajpodatke(char* nazivdatoteke, int brojstudenata) {
 	fclose(p);
 	return studenti;
 }
-double izracunajmaksimalanbrojbodova(int brojac, student* studenti) {
+double IzracunMaxBrBodova(int brojac, student* studenti) {
 	int max_br = 0;
 	int i = 0;
 
@@ -109,11 +114,11 @@ double izracunajmaksimalanbrojbodova(int brojac, student* studenti) {
 
 	return studenti[max_br].bodovi;
 }
-void ispispodataka(student* studenti, int brojac) {
+void IspisPodataka(student* studenti, int brojac) {
 	int i = 0;
 	double max_br_bodova = 0;
 
-	max_br_bodova = izracunajmaksimalanbrojbodova(brojac, studenti);
+	max_br_bodova = IzracunMaxBrBodova(brojac, studenti);
 
 	for (i = 0; i < brojac; i++) {
 		printf(" %s %s %lf %.3lf\n", studenti[i].ime, studenti[i].prezime, studenti[i].bodovi, (double)studenti[i].bodovi / max_br_bodova * 100);
