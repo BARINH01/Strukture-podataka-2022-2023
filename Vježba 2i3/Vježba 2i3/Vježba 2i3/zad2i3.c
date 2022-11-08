@@ -28,6 +28,11 @@ void delete_person(person** head);
 int menu();
 //3.zad
 void insert_in_list(person* currentPerson);
+void sort(person** head);
+person* tortoise_and_hare(person* head);
+person* merge(person* left, person* right);
+person* merge_sort(person* head);
+int export_list(person* forExport, char *fileName);
 void sort(person** head, person *currentPerson);
 person* tortoise_and_hare(person* head);
 person* merge(person* left, person* right);
@@ -82,18 +87,27 @@ int main() {
         case 7:
             printf("Unesite prezime osobe prije koje zelite unjeti novu osobu\n");
             scanf(" %s", surname);
-            insert_in_list(find_before(&head,surname));
+
+            insert_in_list(find_before(&head, surname));
             break;
 
         case 8:
             head = merge_sort(head);
             break;
+
+       /* case 9:
+            printf("Unesite ime datoteke (s datotecnim nastavkom) iz koje zelite iscitati listu:\n");
+            scanf(" %s", fileName);
+            import_list_and_sort(&head, fileName);
+            break;
+            */
             
         case 9:
             printf("Unesite prezime osobe iza koje zelite unjeti novu osobu\n");
             scanf(" %s", surname);
             import_list_and_sort(&head, surname);
             break;
+
         case 10:
             printf("Unesite ime datoteke (s datotecnim nastavkom) u koju zelite ispisati listu:\n");
             scanf(" %s", fileName);
@@ -116,6 +130,9 @@ void insert_beggining(person** head) {
     newPerson = malloc(sizeof(person));
 
     if (!newPerson) {
+
+        printf("Memorija neuspje�no alocirana!\n");
+
         printf("Memorija neuspješno alocirana!\n");
         free(newPerson);
         return;
@@ -243,19 +260,21 @@ void delete_person(person** head) {
 int menu() {
     int choice = 0;
 
-    printf("Izbornik:\n"
-        "0 - izlaz\n"
-        "1 - Unos novog elementa na pocetak liste\n"
-        "2 - Ispis liste\n"
-        "3 - Unos novog elementa na kraj liste\n"
-        "4 - Pronalazak elemnta u listi (po prezimenu)\n"
-        "5 - Brisanje elementa iz liste\n"
-        "6 - Unošenje elementa poslje\n"
-        "7 - Unošenje elementa prije\n"
-        "8 - Sortiraj listu po prezimenu\n");
+    printf("\t****Izbornik****\n"
+        "\t0 - izlaz\n"
+        "\t1 - Unos novog elementa na pocetak liste\n"
+        "\t2 - Ispis liste\n"
+        "\t3 - Unos novog elementa na kraj liste\n"
+        "\t4 - Pronalazak elemnta u listi (po prezimenu)\n"
+        "\t5 - Brisanje elementa iz liste\n"
+        "\t6 - Uno�enje elementa poslje\n"
+        "\t7 - Uno�enje elementa prije\n"
+        "\t8 - Sortiraj listu po prezimenu\n"
+        "\t9 - Unos liste iz datoteke\n"
+        "\t10 - Ispis liste u datoteku\n");
 
     scanf("%d", &choice);
-    if (choice >= 0 && choice <= 9)
+    if (choice >= 0 && choice <= 11)
         return choice;
     else
         printf("Pogresan unos ponudene opcije, pokusajte ponovno.\n");
@@ -267,14 +286,16 @@ void insert_in_list(person* currentPerson) {
     person* newPerson = NULL;
 
     if (currentPerson == NULL) {
-        printf("osoba ne postoji u listi! unlucky\n");
+
+        printf("Osoba ne postoji u listi! Unlucky\n");
         return;
     }
     printf("Osoba pronadena\n");
     newPerson = malloc(sizeof(person));
 
     if (!newPerson) {
-        printf("memorija neuspješno alocirana\n");
+
+        printf("Memorija neuspjesno alocirana\n");
         return;
     }
 
@@ -282,7 +303,11 @@ void insert_in_list(person* currentPerson) {
     newPerson->next = currentPerson->next;
     currentPerson->next = newPerson;
 
+
+    printf("Ineseno\n");
+
     printf("uspio sam unjet\n");
+
     return;
 }
 
@@ -344,11 +369,10 @@ person* merge_sort(person* head) {
     person* newHead = merge(left, right);
 
     return newHead;
-    
-    
-}
-    
-    
+
+
+
+}    
 void import_list_and_sort (person **head, char* fileName) {
 
     FILE* fp = NULL;
