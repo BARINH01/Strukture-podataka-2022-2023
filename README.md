@@ -14,4 +14,4 @@ relatvan_br_bodova = br_bodova/max_br_bodova*100
     D. pronalazi element u listi (po prezimenu),
     E. briše određeni element iz liste,
     
-  U zadatku se ne smiju koristiti globalne varijable.
+    U zadatku se ne smiju koristiti globalne varijable.
