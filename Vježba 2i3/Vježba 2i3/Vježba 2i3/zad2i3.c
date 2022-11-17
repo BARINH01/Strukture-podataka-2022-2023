@@ -28,7 +28,7 @@ void delete_person(person** head);
 int menu();
 //3.zad
 void insert_in_list(person* currentPerson);
-void sort(person** head);
+//void sort(person** head);
 person* tortoise_and_hare(person* head);
 person* merge(person* left, person* right);
 person* merge_sort(person* head);
@@ -131,7 +131,7 @@ void insert_beggining(person** head) {
 
     if (!newPerson) {
 
-        printf("Memorija neuspješno alocirana!\n");
+        printf("Memorija neuspjeï¿½no alocirana!\n");
 
         printf("Memorija neuspjeÅ¡no alocirana!\n");
         free(newPerson);
@@ -267,8 +267,8 @@ int menu() {
         "\t3 - Unos novog elementa na kraj liste\n"
         "\t4 - Pronalazak elemnta u listi (po prezimenu)\n"
         "\t5 - Brisanje elementa iz liste\n"
-        "\t6 - Unošenje elementa poslje\n"
-        "\t7 - Unošenje elementa prije\n"
+        "\t6 - Unoï¿½enje elementa poslje\n"
+        "\t7 - Unoï¿½enje elementa prije\n"
         "\t8 - Sortiraj listu po prezimenu\n"
         "\t9 - Unos liste iz datoteke\n"
         "\t10 - Ispis liste u datoteku\n");
