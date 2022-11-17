@@ -10,58 +10,62 @@
 struct person;
 
 typedef struct person {
-	char name[MAX_STRING];
-	char surname[MAX_STRING];
-	int byear;
-	struct person *next;
+    char name[MAX_STRING];
+    char surname[MAX_STRING];
+    int byear;
+    struct person* next;
 }person;
 
 void insert_beggining(person* currentPerson);
 void insert_in_struct(person* forInsert);
 void printList(person* forPrint);
 void insert_end(person* currentPerson);
-person* find_person(person* inputStruct, char input);
-person* find_before(person* inputStruct, char input);
+person* find_person(person* inputStruct, char *input);
+person* find_before(person* inputStruct, char *input);
 void delete_person(person* inputPerson);
 int menu();
 int main() {
-    person head = {.name = "", .surname = "", .byear = 0, .next = NULL};
+    person head = { .name = "", .surname = "", .byear = 0, .next = NULL };
 
     int choice = 0;
-    char surname = { 0 };
-  
-    choice = menu();
+    char surname[MAX_STRING] = {0};
 
-    switch (choice) {
 
-    case 0:
-        return 0;
-    case 1:
-        insert_beggining(&head);
-        break;
-    case 2:
-        printList(&head);
-        break;
-    case 3:
-        insert_end(&head);
-        break;
 
-    case 4:
-        printf("Unesite prezime trazene osobe: \n");
-        scanf(" %s", &surname);
-        find_person(&head, surname);
-        break;
+    while (1) {
 
-    case 5:
-        delete_person(&head);
-        break;
+        choice = menu();
 
-    default:
-        printf("Pogreska!\n");
+        switch (choice) {
+
+        case 0:
+            return 0;
+        case 1:
+            insert_beggining(&head);
+            break;
+        case 2:
+            printList(head.next);
+            break;
+        case 3:
+            insert_end(&head);
+            break;
+
+        case 4:
+            printf("Unesite prezime trazene osobe: \n");
+            scanf(" %s", surname);
+            find_person(&head, surname);
+            break;
+
+        case 5:
+            delete_person(&head);
+            break;
+
+        default:
+            printf("Pogreska!\n");
+        }
     }
 
-
-	return 0;
+    return 0;
 }
 void insert_beggining(person* currentPerson) {
 
@@ -96,75 +100,64 @@ void insert_in_struct(person* forInsert) {
 
 }
 void printList(person* forPrint) {
-    person* temp = forPrint;
 
     if (forPrint == NULL) {
         printf("Lista je prazna!\n");
     }
 
-    while (temp != NULL) {
-        printf(" %s %s %d", forPrint->name, forPrint->surname, forPrint->byear);
-        temp = temp->next;
-     
+    while (forPrint != NULL) {
+        printf(" %s %s %d\n", forPrint->name, forPrint->surname, forPrint->byear);
+        forPrint = forPrint->next;
+
     }
-    free(temp);
 }
 void insert_end(person* currentPerson) {
-    person* temp = NULL; //123
-    
+    person* temp = NULL;
+
     temp = (person*)malloc(sizeof(person));
 
     if (!temp) {
-        printf("Neuspjesno alociranje memorije!\n");      
+        printf("Neuspjesno alociranje memorije!\n");
         free(temp);
         return;
     }
-
-    temp = currentPerson; //123
-
-    while (currentPerson != NULL) {
-
-        if (currentPerson->next == NULL) {
-            insert_in_struct(temp);
-        }
-       temp->next = currentPerson->next;
-       currentPerson->next = temp;
-
+    while (currentPerson->next != NULL) {
+        currentPerson = currentPerson->next;
     }
-    //free(temp);
+    insert_in_struct(temp);
+    temp->next = currentPerson->next;
+    currentPerson->next = temp;
+    
+    return;
 }
-person* find_person(person* inputStruct, char input) {
-    person* temp = NULL;
-
-    temp =(person*)malloc(sizeof(person));
-
-    if (!temp) {
-        printf("Neuspjesna alokacija memorije!\n");
-        free(temp);
-        return NULL;
-    }
-    temp = inputStruct; //123
+person* find_person(person* inputStruct, char* input) {
+    person* temp = inputStruct;
 
     while (temp != NULL) {
         if (strcmp(input, temp->surname) == 0) {
-            return temp;
+            printf("%s %s %d\n", temp->name, temp->surname, temp->byear);
+                if (strcmp(temp->next->surname, input) == 0) {
+                    printf("%s %s %d\n", temp->next->name, temp->next->surname, temp->next->byear); //pomoæ za trazenje osoba s jednakim prezimenima
+                }
+                return temp;
+            
         }
-
         temp = temp->next;
     }
-    if (temp->next == NULL) {
-        printf("Osoba ne postoji u listi!\n");
+    if (temp == NULL)
+        printf("Lista je prazna!\n");
         return NULL;
-    }
+    
     return NULL;
 }
-person* find_before(person* inputStruct, char input) {
+person* find_before(person* inputStruct, char *input) {
     person* temp = NULL;
     temp = inputStruct;
 
-    while (temp != NULL) {
+    while (temp->next != NULL) {
         if (strcmp(temp->next->surname, input) == 0)
             return temp;
+        temp = temp->next;
     }
     if (temp->next == NULL)
         printf("Osoba nije pronadena!\n");
@@ -179,16 +172,11 @@ void delete_person(person* inputPerson) {
     printf("Unesite prezime osobe koju zelite izbrisati iz liste!\n");
     scanf(" %s", lname);
 
-    temp = (person*)malloc(sizeof(person));
+    temp = find_before(inputPerson, lname);
 
-    if (!temp) {
-        printf("Neuspjesna alokacija memorije!\n");
-        free(temp);
-        return;
-    }
-    temp = find_before(inputPerson, *lname); //pokazivac problem
-
+    inputPerson = temp->next;
     temp->next = inputPerson->next;
+
     free(inputPerson);
 
     return;
@@ -196,8 +184,8 @@ void delete_person(person* inputPerson) {
 int menu() {
     int choice = 0;
 
-    while (1) {
-        printf("Izbornik:\n"
+    
+        printf("\nIzbornik:\n"
             "0 - izlaz\n"
             "1 - Unos novog elementa na pocetak liste\n"
             "2 - Ispis liste\n"
@@ -209,7 +197,6 @@ int menu() {
         if (choice >= 0 && choice <= 5)
             return choice;
         else
-            printf("Pogresan unos ponudene opcije, pokusajte ponovno.\n");
-    }
- 
+            printf("Pogresan unos ponudene opcije, pokusajte ponovno.\n"); 
 }
+
