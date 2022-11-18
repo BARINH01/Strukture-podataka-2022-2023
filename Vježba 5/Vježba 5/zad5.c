@@ -8,23 +8,34 @@
 #define MAX_LINE 1024
 
 typedef struct _element {
-	int number;
+	double number;
 	struct _element* next;
 } element;
+
+
 int read_from_file(element* head);
-element* create_element(int number);
-int push(element* head, int tempNumm);
+int operation(char operator, element* head);
+element* create_element(double number);
 int delete_first(element* head);
-int pop(element* head, int tempNum);
+int push(element* head, double tempNum);
+int pop(element* head);
+int print_postfix_result(element* head);
+
 int main() {
 
 	element head = { .number = 0, .next = NULL };
+	int status = 0;
 
+	status = read_from_file(&head);
 
-
+	if (!status) {
+		delete_all(&head);
+		printf("\nPostfix izraz uspjesno procitan, zauzeta memorija oslobodena.\n");
+	}
 
 	return EXIT_SUCCESS;
 }
+
 int read_from_file(element* head) {
 
 	FILE* fp = NULL;
@@ -32,9 +43,9 @@ int read_from_file(element* head) {
 	char* pbuffer = buffer;
 	char fileName[MAX_STRING] = { 0 };
 	char operator = '0';
-	int t = 0;
+	int b = 0;
 	element* temp = head;
-	int tempNumber = 0;
+	double tempNumber = 0;
 	int check = 0;
 
 	printf("Unesite ime datoteke (s datotecnim nastavkom)\n");
@@ -48,24 +59,68 @@ int read_from_file(element* head) {
 		return ERROR_MESSAGE;
 
 	}
+
 	while (!feof(fp)) {
 		fgets(buffer, MAX_LINE, fp);
-		if (sscanf(pbuffer, "%d %n", &tempNumber, &t) == 1) {
+		while (strlen(pbuffer) > 0) {
+			if (sscanf(pbuffer, " %lf %n", &tempNumber, &b) == 1) {
+				push(head, tempNumber);
+			}
 
-			pbuffer += t;
-			temp = push(head, tempNumber);
+			else if (sscanf(pbuffer, " %c %n", &operator, &b) == 1) {
+				operation(operator, head);
+			}
+
+			pbuffer += b;
 		}
-		else if (sscanf(pbuffer, "%c %n", &operator, &t) == 1) {
-			pbuffer += t;
-			//operation(head, operator);
-		}
-
-
-
 	}
 
+	check = print_postfix_result(head);
+
+	if (check)
+		return ERROR_MESSAGE;
+
+	return 0;
+
 }
-element* create_element(int number) {
+
+int operation(char operator, element* head) {
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+
+	if (!head->next || !head->next->next) {
+		printf("Postfix izraz netocno napisan\n");
+		return ERROR_MESSAGE;
+	}
+
+	num1 = pop(head);
+	num2 = pop(head);
+
+	switch (operator) {
+	case '+':
+		result = num2 + num1;
+		break;
+	case '-':
+		result = num2 - num1;
+		break;
+	case '*':
+		result = num2 * num1;
+		break;
+	case '/':
+		result = num2 / num1;
+		break;
+	default:
+		printf("Postfix izraz netocno napisan!\n");
+		return ERROR_MESSAGE;
+	}
+
+	push(head, result);
+
+	return EXIT_SUCCESS;
+}
+
+element* create_element(double number) {
 	element* newElement = NULL;
 
 	newElement = (element*)malloc(sizeof(element));
@@ -81,7 +136,8 @@ element* create_element(int number) {
 
 	return newElement;
 }
-int push(element* head, int tempNum) {
+
+int push(element* head, double tempNum) {
 
 	element* newElement = NULL;
 	newElement = create_element(tempNum);
@@ -96,6 +152,7 @@ int push(element* head, int tempNum) {
 
 	return EXIT_SUCCESS;;
 }
+
 int delete_first(element* head) {
 	element* temp = NULL;
 
@@ -111,7 +168,25 @@ int delete_first(element* head) {
 
 	return 0;
 }
-int push(element* head, int tempNum) {
+
+int delete_all(element* head) {
+	element* temp = NULL;
+
+	temp = head->next;
+
+	if (!temp) {
+		printf("Lista je prazna!\n");
+		return EXIT_SUCCESS;
+	}
+
+	head->next = temp->next;
+	free(temp);
+
+	return 0;
+}
+
+
+int pop(element* head) {
 	int toPop = 0;
 
 	if (!head->next) {
@@ -123,4 +198,17 @@ int push(element* head, int tempNum) {
 	delete_first(head);
 
 	return toPop;
+}
+
+int print_postfix_result(element* head) {
+
+	if (!head->next || head->next->next) {
+		printf("Postfix izraz netocno napisan!\n");
+		return ERROR_MESSAGE;
+	}
+
+	printf("Rezultat postfixa je: %.2lf", head->next->number);
+
+	
+	return EXIT_SUCCESS;
 }
