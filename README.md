@@ -15,3 +15,9 @@ relatvan_br_bodova = br_bodova/max_br_bodova*100
     E. briše određeni element iz liste,
     
     U zadatku se ne smiju koristiti globalne varijable.
+4. Napisati program za zbrajanje i množenje polinoma. Koeficijenti i eksponenti se
+čitaju iz datoteke.
+Napomena: Eksponenti u datoteci nisu nužno sortirani.
+
+5. Napisati program koji iz datoteke čita postfiks izraz i zatim korištenjem stoga računa
+rezultat. Stog je potrebno realizirati preko vezane liste.
