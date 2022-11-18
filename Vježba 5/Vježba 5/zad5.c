@@ -13,8 +13,9 @@ typedef struct _element {
 } element;
 int read_from_file(element* head);
 element* create_element(int number);
+int push(element* head, int tempNumm);
 int delete_first(element* head);
-int push(element* head, int tempNum);
+int pop(element* head, int tempNum);
 int main() {
 
 	element head = { .number = 0, .next = NULL };
@@ -83,7 +84,7 @@ element* create_element(int number) {
 int push(element* head, int tempNum) {
 
 	element* newElement = NULL;
-	create_element(newElement);
+	newElement = create_element(tempNum);
 
 	if (!newElement) {
 		printf("Greska u izradi novog elementa!\n");
