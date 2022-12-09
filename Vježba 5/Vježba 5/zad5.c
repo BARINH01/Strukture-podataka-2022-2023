@@ -108,6 +108,10 @@ int operation(char operator, element* head) {
 		result = num2 * num1;
 		break;
 	case '/':
+		if (num1 == 0) {
+			printf("Nije moguæe dijeljenje s nulom!\n");
+			return ERROR_MESSAGE;
+		}
 		result = num2 / num1;
 		break;
 	default:
