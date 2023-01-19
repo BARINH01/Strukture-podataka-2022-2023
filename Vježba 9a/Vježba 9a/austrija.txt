@@ -1,0 +1,4 @@
+Salzburg	143978
+Lienz	    11864
+Enns	    10192
+Graz	    237810	
