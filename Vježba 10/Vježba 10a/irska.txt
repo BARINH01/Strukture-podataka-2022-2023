@@ -1,0 +1,4 @@
+Dublin	    481854
+Clonmel	    15215
+Arklow	    8519
+Cork	    127187

@@ -1,0 +1,5 @@
+Austrija    austrija.txt
+Hrvatska    hrvatska.txt
+Irska       irska.txt
+Njemacka    njemacka.txt
+Portugal    portugal.txt
