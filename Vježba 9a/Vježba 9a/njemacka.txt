@@ -1,4 +1,0 @@
-Berlin	    3336026
-Hamburg	    1605606
-Bonn	    115394
-Kiel	    254449
