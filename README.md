@@ -23,7 +23,7 @@ Napomena: Eksponenti u datoteci nisu nužno sortirani.
 
 5. Napisati program koji iz datoteke čita postfiks izraz i zatim korištenjem stoga računa
 rezultat. Stog je potrebno realizirati preko vezane liste.
-
+6. ...
 7. Napisati program koji pomoću vezanih listi (stabala) predstavlja strukturu direktorija.
 Omogućiti unos novih direktorija i pod-direktorija, ispis sadržaja direktorija i
 povratak u prethodni direktorij. Točnije program treba preko menija simulirati
