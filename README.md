@@ -23,3 +23,16 @@ Napomena: Eksponenti u datoteci nisu nužno sortirani.
 
 5. Napisati program koji iz datoteke čita postfiks izraz i zatim korištenjem stoga računa
 rezultat. Stog je potrebno realizirati preko vezane liste.
+6. ...
+7. Napisati program koji pomoću vezanih listi (stabala) predstavlja strukturu direktorija.
+Omogućiti unos novih direktorija i pod-direktorija, ispis sadržaja direktorija i
+povratak u prethodni direktorij. Točnije program treba preko menija simulirati
+korištenje DOS naredbi: 1- "md", 2 - "cd dir", 3 - "cd..", 4 - "dir" i 5 – izlaz.
+8. ...
+9. ...
+10. Napisati program koji čita datoteku drzave.txt u kojoj su zapisani nazivi pojedinih država. Uz
+ime države u datoteci se nalazi i ime dodatne datoteke u kojoj se nalaze gradovi pojedine
+države. Svaka datoteka koja predstavlja državu sadrži popis gradova u formatu naziv_grada,
+broj_stanovnika.
+    a) Potrebno je formirati sortiranu vezanu listu država po nazivu. Svaki čvor vezane liste
+sadrži stablo gradova sortirano po broju stanovnika, zatim po nazivu grada.
